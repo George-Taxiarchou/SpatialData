@@ -1,6 +1,3 @@
-import itertools
-import numpy as np
-
 def scan(file):
     while True:
         field = next(file).split(" ")
@@ -16,6 +13,10 @@ class Cell():
         self.maxX = maxX
         self.minY = minY
         self.maxY = maxY
+        cellpoints = []
+        self.cellpoints = cellpoints
+    def addPoint(self,point):
+        self.cellpoints.append(point)
 
 class Grid():
     def __init__(self,minX,maxX,minY,maxY):
@@ -69,15 +70,58 @@ def main():
         coordsmatrix.append([x,y,id])
         id+=1
 
+
     coordsmatrix = sorted(coordsmatrix, key=lambda coordinate: coordinate[0])
     minX = coordsmatrix[0][0]
     maxX = coordsmatrix[-1][0]
     coordsmatrix = sorted(coordsmatrix, key=lambda coordinate: coordinate[1])
     minY = coordsmatrix[0][1]
     maxY = coordsmatrix[-1][1]
+    coordsmatrix = sorted(coordsmatrix, key=lambda coordinate: coordinate[2])
 
-    g = Grid(minX,maxX,minY,maxY)
-    g.printGrid()
+    # tempmatrix.clear()
+
+    grid = Grid(minX,maxX,minY,maxY)
+    grid.printGrid()
+
+    dx = (maxX - minX) / 10
+    dy = (maxY - minY) / 10
+    pointsadded=0
+    # print len(coordsmatrix)
+    # print coordsmatrix
+    pointsmatrix = []
+    for point in coordsmatrix:
+        xposition = (point[0] - minX) / dx
+        yposition = (point[1] - minY) / dy
+
+        cellX =int( xposition )
+        cellY =int( yposition )
+
+        for cell in grid.getGrid():
+            if(cellX==cell.gridx and cellY==cell.gridy):
+                cell.addPoint(point)
+                pointsmatrix.append(point)
+                pointsadded+=1
+            elif(cellX==10 and cell.gridx==9 and cellY==cell.gridy):
+                cell.addPoint(point)
+                pointsmatrix.append(point)
+                pointsadded+=1
+            elif(cellY==10 and cell.gridy==9 and cellX==cell.gridx):
+                cell.addPoint(point)
+                pointsmatrix.append(point)
+                pointsadded+=1
+            elif(cellX==10 and cellY==10 and cell.gridx==9 and cell.gridy==9):
+                cell.addPoint(point)
+                pointsmatrix.append(point)
+                pointsadded+=1
+
+    for cell in grid.getGrid():
+        print cell.gridx,cell.gridy
+        for cellpoint in cell.cellpoints:
+            gridgrd.write(cellpoint[2].__str__()+" "+cellpoint[0].__str__()+" "+cellpoint[1].__str__()+"\n")
+            # print cellpoint[2]
+
+    print "Points in Grid : " + pointsadded.__str__()
 
     print minX,maxX,minY,maxY
     griddir.close()
