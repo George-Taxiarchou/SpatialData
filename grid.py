@@ -53,14 +53,12 @@ class Grid():
             ,self.getGrid()[i].maxX
             ,self.getGrid()[i].maxY]
 
-
 def main():
     restaurantFile = open ("Beijing_restaurants.txt","r")
     griddir = open("grid.dir","w")
     gridgrd = open("grid.grd","w")
     parser = scan(restaurantFile)
     numofCoords = int(next(parser)[0])
-
     coordsmatrix = []
 
     id = 1
@@ -80,13 +78,12 @@ def main():
     coordsmatrix = sorted(coordsmatrix, key=lambda coordinate: coordinate[2])
 
     grid = Grid(minX,maxX,minY,maxY)
-    grid.printGrid()
+    # grid.printGrid()
 
     dx = (maxX - minX) / 10
     dy = (maxY - minY) / 10
     pointsadded=0
-    # print len(coordsmatrix)
-    # print coordsmatrix
+
     pointsmatrix = []
     for point in coordsmatrix:
         xposition = (point[0] - minX) / dx
@@ -115,8 +112,7 @@ def main():
 
     griddir.write(minX.__str__()+" "+maxX.__str__()+" "+minY.__str__()+" "+maxY.__str__()+"\n")
 
-
-    grdline = 1
+    grdline = 0
     for cell in grid.getGrid():
         if(len(cell.cellpoints)!=0):
             griddir.write(cell.gridx.__str__()+" "+cell.gridy.__str__()+" "+grdline.__str__()+" "+len(cell.cellpoints).__str__()+"\n")
@@ -125,22 +121,13 @@ def main():
                             +cellpoint[1].__str__()+"\n")
             grdline+=1
 
+    print "-----------------------------"
+    print "   grid.dir file spawned"
+    print "   grid.grd file spawned"
+    print "Points added in Grid : " + pointsadded.__str__()
+    print "-----------------------------"
 
-
-
-
-
-
-
-
-
-    print "Points in Grid : " + pointsadded.__str__()
-
-    print minX,maxX,minY,maxY
     griddir.close()
     gridgrd.close()
-
-
-
 
 main()
