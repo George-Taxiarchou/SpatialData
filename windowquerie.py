@@ -34,21 +34,43 @@ def getCellPos(x,y,limitsarray):
     yposition = (y - limitsarray[2]) / dy
     cellX =int( xposition )
     cellY =int( yposition )
-    return [cellX,cellY]
+    return [cellX,cellY,xposition,yposition]
 
 def windowQ(x_low,x_high,y_low,y_high,limitsarray):
     if(x_low>x_high):
-        print "error x_low>x_high"
+        print "Error x_low>x_high"
         exit(0)
     elif(y_low>y_high):
-        print "error y_low>y_high"
+        print "Error y_low>y_high"
         exit(0)
+
+    if(x_low<limitsarray[0] or x_high>limitsarray[1] or y_low<limitsarray[2] or y_high>limitsarray[3]):
+        print "Error , query out of grid bounds"
+        exit(0)
+
     firstcell = getCellPos(x_low,y_low,limitsarray)
     secondcell = getCellPos(x_high,y_high,limitsarray)
+
+    cellsminX = firstcell[2]
+    cellsminY = firstcell[3]
+    cellsmaxX = secondcell[2]
+    cellsmaxY = secondcell[3]
+
+    print '\n'
+    print [cellsminX,cellsmaxX,cellsminY,cellsmaxY]
+    print "\n"
+
+
     intersectingcellsarray = []
     for i in range(firstcell[0],secondcell[0]+1):
         for j in range(firstcell[1],secondcell[1]+1):
             intersectingcellsarray.append([i,j])
+
+    for cell in intersectingcellsarray:
+        print cell[0] , cell[1]
+        if(cell[0]>=cellsminX and cell[0]+1<=cellsmaxX and cell[1]>=cellsminY and cell[1]+1<=cellsmaxY):
+            cell.append("full")
+
     return intersectingcellsarray
 
 
@@ -81,8 +103,7 @@ def main():
     griddir.close()
     gridgrd.close()
 
-    print windowQ(39.723371,39.72927,116.119278,116.163056,limitsarray)
-
+    print windowQ(39.68009,39.772154,116.070466,116.425554,limitsarray)
 
 
 
