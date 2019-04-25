@@ -112,13 +112,7 @@ def windowQ(x_low,x_high,y_low,y_high,limitsarray,cellmatrix,pointsmatrix):
     print "-----------------------------"
                 #END OF PRINTS
 
-def main(argv1,argv2,argv3,argv4):
-
-    argv1 = float(argv1)
-    argv2 = float(argv2)
-    argv3 = float(argv3)
-    argv4 = float(argv4)
-
+def initMatrices():
     griddir = open("grid.dir","r")
     gridgrd = open("grid.grd","r")
 
@@ -143,6 +137,20 @@ def main(argv1,argv2,argv3,argv4):
 
     griddir.close()
     gridgrd.close()
+    return [cellmatrix,pointsmatrix,limitsarray]
+
+def main(argv1,argv2,argv3,argv4):
+
+    argv1 = float(argv1)
+    argv2 = float(argv2)
+    argv3 = float(argv3)
+    argv4 = float(argv4)
+
+    matrices = initMatrices()
+    cellmatrix = matrices[0]
+    pointsmatrix = matrices[1]
+    limitsarray = matrices[2]
+    matrices = []
 
     windowQ(argv1,argv2,argv3,argv4,limitsarray,cellmatrix,pointsmatrix)
 
