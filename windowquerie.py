@@ -1,3 +1,5 @@
+import sys
+
 def scan(file,filetype):
     flag = 0
     if(filetype == "dir"):
@@ -61,7 +63,6 @@ def windowQ(x_low,x_high,y_low,y_high,limitsarray,cellmatrix,pointsmatrix):
                 intersectingcellsarray.append([i,j])
 
     for cell in intersectingcellsarray:
-        # print cell[0] , cell[1]
         if(cell[0]>=cellsminX and cell[0]+1<=cellsmaxX and cell[1]>=cellsminY and cell[1]+1<=cellsmaxY):
             cell.append("full")
         else:
@@ -103,7 +104,14 @@ def windowQ(x_low,x_high,y_low,y_high,limitsarray,cellmatrix,pointsmatrix):
     print "  Points in Window : " + numberofpointsadded.__str__()
     print "-----------------------------"
                 #END OF PRINTS
-def main():
+
+def main(argv1,argv2,argv3,argv4):
+
+    argv1 = float(argv1)
+    argv2 = float(argv2)
+    argv3 = float(argv3)
+    argv4 = float(argv4)
+
     griddir = open("grid.dir","r")
     gridgrd = open("grid.grd","r")
 
@@ -128,8 +136,8 @@ def main():
 
     griddir.close()
     gridgrd.close()
-    
-    # windowQ(39.68009,40.179911,116.070466,116.719976,limitsarray,cellmatrix,pointsmatrix)
-    windowQ(39.68009,39.772154,116.070466,116.425554,limitsarray,cellmatrix,pointsmatrix)
 
-main()
+    windowQ(argv1,argv2,argv3,argv4,limitsarray,cellmatrix,pointsmatrix)
+
+if __name__ == "__main__":
+    main(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
