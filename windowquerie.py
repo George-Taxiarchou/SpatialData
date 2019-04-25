@@ -38,6 +38,11 @@ def getCellPos(x,y,limitsarray):
     cellY =int( yposition )
     return [cellX,cellY,xposition,yposition]
 
+def writeToFile(my_list):
+    with open('queryanswer.txt', 'w') as f:
+        for item in my_list:
+            f.write("%s\n" % item)
+
 def windowQ(x_low,x_high,y_low,y_high,limitsarray,cellmatrix,pointsmatrix):
     queryanswer = []
 
@@ -85,6 +90,8 @@ def windowQ(x_low,x_high,y_low,y_high,limitsarray,cellmatrix,pointsmatrix):
                         if(pointx>=cellsminX and pointx<=cellsmaxX and pointy>=cellsminY and pointy<=cellsmaxY):
                             queryanswer.append(point)
                             numberofpointsadded+=1
+
+    writeToFile(queryanswer)
 
                 #AESTHETIC PRINTS START
     print "--------------------------------"
