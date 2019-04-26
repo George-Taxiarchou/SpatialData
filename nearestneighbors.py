@@ -108,12 +108,22 @@ def initQueue(queue,point,limitsarray,cellmatrix):
             for cell in cellmatrix:
                 if(mindist(point,cell,limitsarray)<tempmindist):
                     tempcell = cell
+            appendqueue(queue,tempcell,point,limitsarray)
 
-
-
-# def getNearestNeighbor(queue,point,limitsarray):
-#     while True:
-#         appendqueue(queue,)
+def getNearestNeighbor(queue,point,limitsarray,pointsmatrix,cellmatrix):
+    while True:
+        if(queue[0][-2]=="point"):
+            p = queue[0]
+            queue.pop(0)
+            yield p
+        elif(queue[0][-2]=="cell"):
+            c = queue[0]
+            queue.pop(0)
+            for i in range(c[0][3]):
+                appendqueue(queue,pointsmatrix[c[0][2]+i],point,limitsarray)
+        else:
+            print "No more Neighbors found."
+            exit(0)
 
 def main():
     matrices = initMatrices()
