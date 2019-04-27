@@ -39,7 +39,7 @@ def getCellPos(x,y,limitsarray):
     return [cellX,cellY,xposition,yposition]
 
 def writeToFile(my_list):
-    with open('queryanswer.txt', 'w') as f:
+    with open('answer.txt', 'w') as f:
         for item in my_list:
             f.write("%s\n" % item)
 
