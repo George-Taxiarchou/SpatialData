@@ -32,6 +32,7 @@ def file_len(fname):
 def getCellPos(x,y,limitsarray):
     dx = (limitsarray[1] - limitsarray[0]) / 10
     dy = (limitsarray[3] - limitsarray[2]) / 10
+    
     xposition = (x - limitsarray[0]) / dx
     yposition = (y - limitsarray[2]) / dy
     cellX =int( xposition )

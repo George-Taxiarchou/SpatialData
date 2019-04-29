@@ -4,60 +4,62 @@ from windowquerie import scan,file_len,getCellPos,writeToFile,initMatrices
 def mindist(q,cell,limitsarray):
     qpointposition = getCellPos(q[1],q[2],limitsarray)
     dist = 0
+    xstep = (limitsarray[1] - limitsarray[0]) / 10
+    ystep = (limitsarray[3] - limitsarray[2]) / 10
     #cell is on top
     if(qpointposition[0] == cell[0] and cell[1]>qpointposition[1]):
-        dqy = abs(qpointposition[3])
-        dy = cell[1]
+        dqy = abs(q[2])
+        dy = limitsarray[2]+cell[1]*ystep
         dist = (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is on bottom
     elif(qpointposition[0] == cell[0] and cell[1]>qpointposition[1]):
-        dqy = abs(qpointposition[3])
-        dy = cell[1]+1
+        dqy = abs(q[2])
+        dy = limitsarray[2]+(cell[1]+1)*ystep
         dist = (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is left
     elif(cell[1]==qpointposition[1] and cell[0]<qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dx = cell[0]+1
+        dqx = abs(q[1])
+        dx = limitsarray[0]+(cell[0]+1)*xstep
         dist = (dqx-dx)**2
         dist = math.sqrt(dist)
     #cell is right
     elif(cell[1]==qpointposition[1] and cell[0]>qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dx = cell[0]
+        dqx = abs(q[1])
+        dx = limitsarray[0]+cell[0]*xstep
         dist = (dqx-dx)**2
         dist = math.sqrt(dist)
     #cell is on top right
     elif(cell[1]>qpointposition[1] and cell[0]>qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dqy = abs(qpointposition[3])
-        dx = cell[0]
-        dy = cell[1]
+        dqx = abs(q[1])
+        dqy = abs(q[2])
+        dx = limitsarray[0]+cell[0]*xstep
+        dy = limitsarray[2]+cell[1]*ystep
         dist = (dqx-dx)**2 + (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is on top left
     elif(cell[1]>qpointposition[1] and cell[0]<qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dqy = abs(qpointposition[3])
-        dx = cell[0]+1
-        dy = cell[1]
+        dqx = abs(q[1])
+        dqy = abs(q[2])
+        dx = limitsarray[0]+(cell[0]+1)*xstep
+        dy = limitsarray[2]+cell[1]*ystep
         dist = (dqx-dx)**2 + (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is on bottom right
     elif(cell[1]<qpointposition[1] and cell[0]>qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dqy = abs(qpointposition[3])
-        dx = cell[0]
-        dy = cell[1]+1
+        dqx = abs(q[1])
+        dqy = abs(q[2])
+        dx = limitsarray[0]+cell[0]*xstep
+        dy = limitsarray[2]+(cell[1]+1)*ystep
         dist = (dqx-dx)**2 + (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is on bottom left
     elif(cell[1]<qpointposition[1] and cell[0]<qpointposition[0]):
-        dqx = abs(qpointposition[2])
-        dqy = abs(qpointposition[3])
-        dx = cell[0]+1
-        dy = cell[1]+1
+        dqx = abs(q[1])
+        dqy = abs(q[2])
+        dx = limitsarray[0]+(cell[0]+1)*xstep
+        dy = limitsarray[2]+(cell[1]+1)*ystep
         dist = (dqx-dx)**2 + (dqy-dy)**2
         dist = math.sqrt(dist)
     return dist
@@ -65,10 +67,10 @@ def mindist(q,cell,limitsarray):
 def minpointsdist(q1,q2,limitsarray):
     q1pointposition = getCellPos(q1[1],q1[2],limitsarray)
     q2pointposition = getCellPos(q2[1],q2[2],limitsarray)
-    q1x = abs(q1pointposition[2])
-    q1y = abs(q1pointposition[3])
-    q2x = abs(q2pointposition[2])
-    q2y = abs(q2pointposition[3])
+    q1x = abs(q1[1])
+    q1y = abs(q1[2])
+    q2x = abs(q2[1])
+    q2y = abs(q2[2])
     dist = (q1x-q2x)**2 + (q1y-q2y)**2
     dist = math.sqrt(dist)
     return dist
@@ -85,7 +87,7 @@ def sortedQueue(queue):
 
 def appendedqueue(queue,item,point,limitsarray,appendedcells):
     if(idItem(item)=="cell" and (item not in appendedcells)):
-        appendedcells.append(item)
+        # appendedcells.append(item)
         distance = mindist(point,item,limitsarray)
         tempitem = item
         tempitem.append("cell")
@@ -119,12 +121,12 @@ def getNearestNeighbor(queue,point,limitsarray,pointsmatrix,cellmatrix,appendedc
             print "NO MORE NEIGHBORS"
             exit(0)
         if(queue[0][-2]=="cell"):
+            appendedcells.append(queue[0])
             c = queue[0]
             neighborcells = []
             for i in range(-1,2):
                 for j in range(-1,2):
                     if(c[0]+i==c[0] and c[1]+j==c[1]):
-                        # print "keepoooo"
                         continue
                     elif(c[0]+i>=0 and c[0]+i<=9 and c[1]+j>=0 and c[1]+j<=9):
                         for cell in cellmatrix:
@@ -163,7 +165,7 @@ def main(k,x,y):
     format = ['BeijingFile_Line','X','Y','Type','Distance on Grid']
     file.write(format.__str__()+'\n')
     print format
-    
+
     count=0
     flag = k-1
     for j in range(k):
