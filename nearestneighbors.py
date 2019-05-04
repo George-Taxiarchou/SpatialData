@@ -13,7 +13,7 @@ def mindist(q,cell,limitsarray):
         dist = (dqy-dy)**2
         dist = math.sqrt(dist)
     #cell is on bottom
-    elif(qpointposition[0] == cell[0] and cell[1]>qpointposition[1]):
+    elif(qpointposition[0] == cell[0] and cell[1]<qpointposition[1]):
         dqy = abs(q[2])
         dy = limitsarray[2]+(cell[1]+1)*ystep
         dist = (dqy-dy)**2
@@ -67,10 +67,10 @@ def mindist(q,cell,limitsarray):
 def minpointsdist(q1,q2,limitsarray):
     q1pointposition = getCellPos(q1[1],q1[2],limitsarray)
     q2pointposition = getCellPos(q2[1],q2[2],limitsarray)
-    q1x = abs(q1[1])
-    q1y = abs(q1[2])
-    q2x = abs(q2[1])
-    q2y = abs(q2[2])
+    q1x = (q1[1])
+    q1y = (q1[2])
+    q2x = (q2[1])
+    q2y = (q2[2])
     dist = (q1x-q2x)**2 + (q1y-q2y)**2
     dist = math.sqrt(dist)
     return dist
@@ -108,12 +108,24 @@ def initQueue(queue,point,limitsarray,cellmatrix,appendedcells):
     tempcell = cellmatrix[0]
     for cell in cellmatrix:
         if(pointPos[0]==cell[0] and pointPos[1]==cell[1]):
+            tempcell = cell
             queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
+            # break
+        elif(pointPos[0]>=0 and pointPos[0]<=9 and pointPos[1]>=0 and pointPos[1]<=9):
+            queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
+            initcell = pointPos
+            initcell[-2] = "cell"
+            initcell[-1] = 0
+            appendedcells.append(pointPos)
         else:
+            print "point outside the grid"
             for cell in cellmatrix:
                 if(mindist(point,cell,limitsarray)<tempmindist):
                     tempcell = cell
-            queue = appendedqueue(queue,tempcell,point,limitsarray,appendedcells)
+            queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
+
+        break
+
 
 def getNearestNeighbor(queue,point,limitsarray,pointsmatrix,cellmatrix,appendedcells):
     while True:
@@ -143,6 +155,8 @@ def getNearestNeighbor(queue,point,limitsarray,pointsmatrix,cellmatrix,appendedc
             yield p
 
 
+
+
 def main(k,x,y):
     k = int(k)
     x = float(x)
@@ -162,7 +176,7 @@ def main(k,x,y):
 
     neighbor = getNearestNeighbor(queue,point,limitsarray,pointsmatrix,cellmatrix,appendedcells)
     file = open('nearestNeighbors.txt', 'w')
-    format = ['BeijingFile_Line','X','Y','Type','Distance on Grid']
+    format = ['BeijingFile_Line','X','Y','Type','Distance']
     file.write(format.__str__()+'\n')
     print format
 

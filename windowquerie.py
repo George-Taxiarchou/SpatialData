@@ -32,7 +32,7 @@ def file_len(fname):
 def getCellPos(x,y,limitsarray):
     dx = (limitsarray[1] - limitsarray[0]) / 10
     dy = (limitsarray[3] - limitsarray[2]) / 10
-    
+
     xposition = (x - limitsarray[0]) / dx
     yposition = (y - limitsarray[2]) / dy
     cellX =int( xposition )
@@ -40,7 +40,7 @@ def getCellPos(x,y,limitsarray):
     return [cellX,cellY,xposition,yposition]
 
 def writeToFile(my_list):
-    with open('answer.txt', 'w') as f:
+    with open('windowquerie.txt', 'w') as f:
         for item in my_list:
             f.write("%s\n" % item)
 
