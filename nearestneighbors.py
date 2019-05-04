@@ -67,10 +67,10 @@ def mindist(q,cell,limitsarray):
 def minpointsdist(q1,q2,limitsarray):
     q1pointposition = getCellPos(q1[1],q1[2],limitsarray)
     q2pointposition = getCellPos(q2[1],q2[2],limitsarray)
-    q1x = (q1[1])
-    q1y = (q1[2])
-    q2x = (q2[1])
-    q2y = (q2[2])
+    q1x = abs(q1[1])
+    q1y = abs(q1[2])
+    q2x = abs(q2[1])
+    q2y = abs(q2[2])
     dist = (q1x-q2x)**2 + (q1y-q2y)**2
     dist = math.sqrt(dist)
     return dist
@@ -110,20 +110,18 @@ def initQueue(queue,point,limitsarray,cellmatrix,appendedcells):
         if(pointPos[0]==cell[0] and pointPos[1]==cell[1]):
             tempcell = cell
             queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
-            # break
         elif(pointPos[0]>=0 and pointPos[0]<=9 and pointPos[1]>=0 and pointPos[1]<=9):
-            queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
             initcell = pointPos
-            initcell[-2] = "cell"
+            initcell[-2] = 0
             initcell[-1] = 0
-            appendedcells.append(pointPos)
+            queue = appendedqueue(queue,initcell,point,limitsarray,appendedcells)
         else:
-            print "point outside the grid"
+            print "\npoint outside the grid\n"
             for cell in cellmatrix:
                 if(mindist(point,cell,limitsarray)<tempmindist):
                     tempcell = cell
-            queue = appendedqueue(queue,cell,point,limitsarray,appendedcells)
-
+                    tempmindist = mindist(point,tempcell,limitsarray)
+            queue = appendedqueue(queue,tempcell,point,limitsarray,appendedcells)
         break
 
 
